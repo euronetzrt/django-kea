@@ -11,7 +11,7 @@ class HostIdentifierType(models.Model):
         db_table = 'host_identifier_type'
 
     def __str__(self):
-        return self.name or str(self.typ)
+        return self.name or str(self.type)
 
 
 class DhcpOptionScope(models.Model):
