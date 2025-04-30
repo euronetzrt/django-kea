@@ -1,6 +1,6 @@
-/*
-  AUTO-GENERATED file for Django model django_kea.LeaseState
+// Code generated for Django model django_kea.LeaseState. DO NOT EDIT.
 
+/*
   Command used to generate:
 
   DJANGO_SETTINGS_MODULE=keatest.settings ../djan-go-rm/djan-go-rm.py --gomodule github.com/euronetzrt/django-kea django_kea
@@ -11,9 +11,13 @@
 package django_kea
 
 import (
-	"database/sql"
-	"github.com/euronetzrt/django-kea/models"
+	"context"
+	"fmt"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
+
+	"github.com/euronetzrt/django-kea/models"
 )
 
 // Leasestate mirrors model django_kea.LeaseState
@@ -24,11 +28,15 @@ type Leasestate struct {
 	Name  string
 }
 
+// LeasestateList is a list of Leasestate
+type LeasestateList []*Leasestate
+
 // LeasestateQS represents a queryset for django_kea.LeaseState
 type LeasestateQS struct {
-	condFragments models.AndFragment
-	order         []string
-	forUpdate     bool
+	distinctOnFields []string
+	condFragments    models.AndFragment
+	order            []string
+	forClause        string
 }
 
 func (qs LeasestateQS) filter(c string, p interface{}) LeasestateQS {
@@ -57,6 +65,8 @@ func (qs LeasestateQS) Or(exprs ...LeasestateQS) LeasestateQS {
 
 	return qs
 }
+
+// BEGIN - django_kea.LeaseState.state
 
 // StateEq filters for State being equal to argument
 func (qs LeasestateQS) StateEq(v int64) LeasestateQS {
@@ -88,21 +98,19 @@ func (qs LeasestateQS) StateGe(v int64) LeasestateQS {
 	return qs.filter(`"state" >=`, v)
 }
 
-type inLeasestateState struct {
-	values []interface{}
-}
+type inLeasestateState []interface{}
 
-func (in *inLeasestateState) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLeasestateState) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"state" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"state" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs LeasestateQS) StateIn(values []int64) LeasestateQS {
@@ -113,29 +121,25 @@ func (qs LeasestateQS) StateIn(values []int64) LeasestateQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLeasestateState{
-			values: vals,
-		},
+		inLeasestateState(vals),
 	)
 
 	return qs
 }
 
-type notinLeasestateState struct {
-	values []interface{}
-}
+type notinLeasestateState []interface{}
 
-func (in *notinLeasestateState) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLeasestateState) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"state" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"state" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs LeasestateQS) StateNotIn(values []int64) LeasestateQS {
@@ -146,9 +150,7 @@ func (qs LeasestateQS) StateNotIn(values []int64) LeasestateQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLeasestateState{
-			values: vals,
-		},
+		notinLeasestateState(vals),
 	)
 
 	return qs
@@ -167,6 +169,17 @@ func (qs LeasestateQS) OrderByStateDesc() LeasestateQS {
 
 	return qs
 }
+
+// DistinctOnState marks field in queries to add to DISTINCT ON clause
+func (qs LeasestateQS) DistinctOnState() LeasestateQS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"state"`)
+
+	return qs
+}
+
+// END - django_kea.LeaseState.state
+
+// BEGIN - django_kea.LeaseState.name
 
 // NameEq filters for Name being equal to argument
 func (qs LeasestateQS) NameEq(v string) LeasestateQS {
@@ -198,21 +211,19 @@ func (qs LeasestateQS) NameGe(v string) LeasestateQS {
 	return qs.filter(`"name" >=`, v)
 }
 
-type inLeasestateName struct {
-	values []interface{}
-}
+type inLeasestateName []interface{}
 
-func (in *inLeasestateName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLeasestateName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"name" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"name" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs LeasestateQS) NameIn(values []string) LeasestateQS {
@@ -223,29 +234,25 @@ func (qs LeasestateQS) NameIn(values []string) LeasestateQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLeasestateName{
-			values: vals,
-		},
+		inLeasestateName(vals),
 	)
 
 	return qs
 }
 
-type notinLeasestateName struct {
-	values []interface{}
-}
+type notinLeasestateName []interface{}
 
-func (in *notinLeasestateName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLeasestateName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"name" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"name" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs LeasestateQS) NameNotIn(values []string) LeasestateQS {
@@ -256,9 +263,7 @@ func (qs LeasestateQS) NameNotIn(values []string) LeasestateQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLeasestateName{
-			values: vals,
-		},
+		notinLeasestateName(vals),
 	)
 
 	return qs
@@ -278,9 +283,46 @@ func (qs LeasestateQS) OrderByNameDesc() LeasestateQS {
 	return qs
 }
 
+// DistinctOnName marks field in queries to add to DISTINCT ON clause
+func (qs LeasestateQS) DistinctOnName() LeasestateQS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"name"`)
+
+	return qs
+}
+
+// END - django_kea.LeaseState.name
+
+// OrderByRandom randomizes result
+func (qs LeasestateQS) OrderByRandom() LeasestateQS {
+	qs.order = append(qs.order, `random()`)
+
+	return qs
+}
+
 // ForUpdate marks the queryset to use FOR UPDATE clause
 func (qs LeasestateQS) ForUpdate() LeasestateQS {
-	qs.forUpdate = true
+	qs.forClause = " FOR UPDATE"
+
+	return qs
+}
+
+// ForUpdateNowait marks the queryset to use FOR UPDATE NOWAIT clause
+func (qs LeasestateQS) ForUpdateNowait() LeasestateQS {
+	qs.forClause = " FOR UPDATE NOWAIT"
+
+	return qs
+}
+
+// ForUpdateSkipLocked marks the queryset to use FOR UPDATE SKIP LOCKED clause
+func (qs LeasestateQS) ForUpdateSkipLocked() LeasestateQS {
+	qs.forClause = " FOR UPDATE SKIP LOCKED"
+
+	return qs
+}
+
+// ClearForUpdate clears FOR UPDATE clause set on queryset
+func (qs LeasestateQS) ClearForUpdate() LeasestateQS {
+	qs.forClause = ""
 
 	return qs
 }
@@ -303,16 +345,19 @@ func (qs LeasestateQS) orderByClause() string {
 	return " ORDER BY " + strings.Join(qs.order, ", ")
 }
 
-func (qs LeasestateQS) queryFull() (string, []interface{}) {
+func (qs LeasestateQS) queryFull(distinctOnFields []string) (string, []interface{}) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s += qs.orderByClause()
-	if qs.forUpdate {
-		s += " FOR UPDATE"
+	s += qs.forClause
+
+	var distinctClause string
+	if len(distinctOnFields) > 0 {
+		distinctClause = fmt.Sprintf("DISTINCT ON (%s) ", strings.Join(distinctOnFields, ", "))
 	}
 
-	return `SELECT "state", "name" FROM "lease_state"` + s, p
+	return `SELECT ` + distinctClause + `"state", "name" FROM "lease_state"` + s, p
 }
 
 // QueryId returns statement and parameters suitable for embedding in IN clause
@@ -322,17 +367,37 @@ func (qs LeasestateQS) QueryId(c *models.PositionalCounter) (string, []interface
 	return `SELECT "state" FROM "lease_state"` + s, p
 }
 
-// All returns all rows matching queryset filters
-func (qs LeasestateQS) All(db models.DBInterface) ([]*Leasestate, error) {
-	s, p := qs.queryFull()
+// Count returns the number of rows matching queryset filters
+func (qs LeasestateQS) Count(ctx context.Context, db models.DBInterface) (count int, err error) {
+	c := &models.PositionalCounter{}
 
-	rows, err := db.Query(s, p...)
+	s, p := qs.whereClause(c)
+
+	var countClause string
+	if len(qs.distinctOnFields) > 0 {
+		countClause = fmt.Sprintf("DISTINCT (%s)", strings.Join(qs.distinctOnFields, ", "))
+	} else {
+		countClause = `"state"`
+	}
+
+	row := db.QueryRow(ctx, `SELECT COUNT(`+countClause+`) FROM "lease_state"`+s, p...)
+
+	err = row.Scan(&count)
+
+	return
+}
+
+// All returns all rows matching queryset filters
+func (qs LeasestateQS) All(ctx context.Context, db models.DBInterface) (LeasestateList, error) {
+	s, p := qs.queryFull(qs.distinctOnFields)
+
+	rows, err := db.Query(ctx, s, p...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var ret []*Leasestate
+	var ret LeasestateList
 	for rows.Next() {
 		obj := Leasestate{existsInDB: true}
 		if err = rows.Scan(&obj.State, &obj.Name); err != nil {
@@ -341,23 +406,27 @@ func (qs LeasestateQS) All(db models.DBInterface) ([]*Leasestate, error) {
 		ret = append(ret, &obj)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return ret, nil
 }
 
 // First returns the first row matching queryset filters, others are discarded
-func (qs LeasestateQS) First(db models.DBInterface) (*Leasestate, error) {
-	s, p := qs.queryFull()
+func (qs LeasestateQS) First(ctx context.Context, db models.DBInterface) (*Leasestate, error) {
+	s, p := qs.queryFull(nil)
 
 	s += " LIMIT 1"
 
-	row := db.QueryRow(s, p...)
+	row := db.QueryRow(ctx, s, p...)
 
 	obj := Leasestate{existsInDB: true}
 	err := row.Scan(&obj.State, &obj.Name)
 	switch err {
 	case nil:
 		return &obj, nil
-	case sql.ErrNoRows:
+	case pgx.ErrNoRows:
 		return nil, nil
 	default:
 		return nil, err
@@ -365,18 +434,18 @@ func (qs LeasestateQS) First(db models.DBInterface) (*Leasestate, error) {
 }
 
 // Delete deletes rows matching queryset filters
-func (qs LeasestateQS) Delete(db models.DBInterface) (int64, error) {
+func (qs LeasestateQS) Delete(ctx context.Context, db models.DBInterface) (int64, error) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s = `DELETE FROM "lease_state"` + s
 
-	result, err := db.Exec(s, p...)
+	result, err := db.Exec(ctx, s, p...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // Update returns an Update queryset inheriting all the filter conditions, which then can be
@@ -421,7 +490,7 @@ func (uqs LeasestateUpdateQS) SetName(v string) LeasestateUpdateQS {
 }
 
 // Exec executes the update operation
-func (uqs LeasestateUpdateQS) Exec(db models.DBInterface) (int64, error) {
+func (uqs LeasestateUpdateQS) Exec(ctx context.Context, db models.DBInterface) (int64, error) {
 	if len(uqs.updates) == 0 {
 		return 0, nil
 	}
@@ -444,17 +513,17 @@ func (uqs LeasestateUpdateQS) Exec(db models.DBInterface) (int64, error) {
 
 	params = append(params, wp...)
 
-	result, err := db.Exec(st, params...)
+	result, err := db.Exec(ctx, st, params...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // insert operation
-func (l *Leasestate) insert(db models.DBInterface) error {
-	_, err := db.Exec(`INSERT INTO "lease_state" ("name", "state") VALUES ($1, $2)`, l.Name, l.State)
+func (l *Leasestate) insert(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `INSERT INTO "lease_state" ("name", "state") VALUES ($1, $2)`, l.Name, l.State)
 
 	if err != nil {
 		return err
@@ -466,28 +535,70 @@ func (l *Leasestate) insert(db models.DBInterface) error {
 }
 
 // update operation
-func (l *Leasestate) update(db models.DBInterface) error {
-	_, err := db.Exec(`UPDATE "lease_state" SET "name" = $1 WHERE "state" = $2`, l.Name, l.State)
+func (l *Leasestate) update(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `UPDATE "lease_state" SET "name" = $1 WHERE "state" = $2`, l.Name, l.State)
 
 	return err
 }
 
 // Save inserts or updates record
-func (l *Leasestate) Save(db models.DBInterface) error {
+func (l *Leasestate) Save(ctx context.Context, db models.DBInterface) error {
 	if l.existsInDB {
-		return l.update(db)
+		return l.update(ctx, db)
 	}
 
-	return l.insert(db)
+	return l.insert(ctx, db)
 }
 
 // Delete removes row from database
-func (l *Leasestate) Delete(db models.DBInterface) error {
-	_, err := db.Exec(`DELETE FROM "lease_state" WHERE "state" = $1`, l.State)
+func (l *Leasestate) Delete(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `DELETE FROM "lease_state" WHERE "state" = $1`, l.State)
 
 	l.existsInDB = false
 
 	return err
+}
+
+// Save saves all elements, optimizing inserts in a batch
+func (ll LeasestateList) Save(ctx context.Context, db models.DBInterface) error {
+	var inserts LeasestateList
+
+	for _, l := range ll {
+		if l.existsInDB {
+			if err := l.update(ctx, db); err != nil {
+				return err
+			}
+		} else {
+			inserts = append(inserts, l)
+		}
+	}
+
+	if len(inserts) == 0 {
+		return nil
+	}
+
+	vva := make([]string, 0, len(inserts))
+	vaa := make([]any, 0, 2*len(inserts))
+	offs := 1
+	for _, l := range inserts {
+		vva = append(vva, fmt.Sprintf("($%d, $%d)", offs+0, offs+1))
+		vaa = append(vaa, l.Name, l.State)
+		offs += 2
+	}
+
+	qs := `INSERT INTO "lease_state" ("name", "state") VALUES ` + strings.Join(vva, ", ")
+	_, err := db.Exec(ctx, qs, vaa...)
+
+	if err != nil {
+		return err
+	}
+
+	for _, l := range inserts {
+		l.existsInDB = true
+	}
+
+	return nil
+
 }
 
 // Lease4 returns the set of Lease4 referencing this Leasestate instance

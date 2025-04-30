@@ -1,6 +1,6 @@
-/*
-  AUTO-GENERATED file for Django model django_kea.Lease4
+// Code generated for Django model django_kea.Lease4. DO NOT EDIT.
 
+/*
   Command used to generate:
 
   DJANGO_SETTINGS_MODULE=keatest.settings ../djan-go-rm/djan-go-rm.py --gomodule github.com/euronetzrt/django-kea django_kea
@@ -11,10 +11,15 @@
 package django_kea
 
 import (
+	"context"
 	"database/sql"
-	"github.com/euronetzrt/django-kea/models"
+	"fmt"
 	"strings"
 	"time"
+
+	"github.com/jackc/pgx/v5"
+
+	"github.com/euronetzrt/django-kea/models"
 )
 
 // Lease4 mirrors model django_kea.Lease4
@@ -32,13 +37,20 @@ type Lease4 struct {
 	Hostname      sql.NullString
 	state         sql.NullInt64
 	UserContext   sql.NullString
+	RelayId       sql.NullString
+	RemoteId      sql.NullString
+	PoolId        int64
 }
+
+// Lease4List is a list of Lease4
+type Lease4List []*Lease4
 
 // Lease4QS represents a queryset for django_kea.Lease4
 type Lease4QS struct {
-	condFragments models.AndFragment
-	order         []string
-	forUpdate     bool
+	distinctOnFields []string
+	condFragments    models.AndFragment
+	order            []string
+	forClause        string
 }
 
 func (qs Lease4QS) filter(c string, p interface{}) Lease4QS {
@@ -67,6 +79,8 @@ func (qs Lease4QS) Or(exprs ...Lease4QS) Lease4QS {
 
 	return qs
 }
+
+// BEGIN - django_kea.Lease4.address
 
 // AddressEq filters for Address being equal to argument
 func (qs Lease4QS) AddressEq(v string) Lease4QS {
@@ -98,21 +112,19 @@ func (qs Lease4QS) AddressGe(v string) Lease4QS {
 	return qs.filter(`"address" >=`, v)
 }
 
-type inLease4Address struct {
-	values []interface{}
-}
+type inLease4Address []interface{}
 
-func (in *inLease4Address) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4Address) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"address" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"address" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) AddressIn(values []string) Lease4QS {
@@ -123,29 +135,25 @@ func (qs Lease4QS) AddressIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4Address{
-			values: vals,
-		},
+		inLease4Address(vals),
 	)
 
 	return qs
 }
 
-type notinLease4Address struct {
-	values []interface{}
-}
+type notinLease4Address []interface{}
 
-func (in *notinLease4Address) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4Address) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"address" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"address" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) AddressNotIn(values []string) Lease4QS {
@@ -156,9 +164,7 @@ func (qs Lease4QS) AddressNotIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4Address{
-			values: vals,
-		},
+		notinLease4Address(vals),
 	)
 
 	return qs
@@ -177,6 +183,17 @@ func (qs Lease4QS) OrderByAddressDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnAddress marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnAddress() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"address"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.address
+
+// BEGIN - django_kea.Lease4.hwaddr
 
 // HwaddrIsNull filters for Hwaddr being null
 func (qs Lease4QS) HwaddrIsNull() Lease4QS {
@@ -230,21 +247,19 @@ func (qs Lease4QS) HwaddrGe(v string) Lease4QS {
 	return qs.filter(`"hwaddr" >=`, v)
 }
 
-type inLease4Hwaddr struct {
-	values []interface{}
-}
+type inLease4Hwaddr []interface{}
 
-func (in *inLease4Hwaddr) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4Hwaddr) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"hwaddr" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"hwaddr" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) HwaddrIn(values []string) Lease4QS {
@@ -255,29 +270,25 @@ func (qs Lease4QS) HwaddrIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4Hwaddr{
-			values: vals,
-		},
+		inLease4Hwaddr(vals),
 	)
 
 	return qs
 }
 
-type notinLease4Hwaddr struct {
-	values []interface{}
-}
+type notinLease4Hwaddr []interface{}
 
-func (in *notinLease4Hwaddr) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4Hwaddr) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"hwaddr" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"hwaddr" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) HwaddrNotIn(values []string) Lease4QS {
@@ -288,9 +299,7 @@ func (qs Lease4QS) HwaddrNotIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4Hwaddr{
-			values: vals,
-		},
+		notinLease4Hwaddr(vals),
 	)
 
 	return qs
@@ -309,6 +318,17 @@ func (qs Lease4QS) OrderByHwaddrDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnHwaddr marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnHwaddr() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"hwaddr"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.hwaddr
+
+// BEGIN - django_kea.Lease4.client_id
 
 // ClientIdIsNull filters for ClientId being null
 func (qs Lease4QS) ClientIdIsNull() Lease4QS {
@@ -362,21 +382,19 @@ func (qs Lease4QS) ClientIdGe(v string) Lease4QS {
 	return qs.filter(`"client_id" >=`, v)
 }
 
-type inLease4ClientId struct {
-	values []interface{}
-}
+type inLease4ClientId []interface{}
 
-func (in *inLease4ClientId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4ClientId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"client_id" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"client_id" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ClientIdIn(values []string) Lease4QS {
@@ -387,29 +405,25 @@ func (qs Lease4QS) ClientIdIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4ClientId{
-			values: vals,
-		},
+		inLease4ClientId(vals),
 	)
 
 	return qs
 }
 
-type notinLease4ClientId struct {
-	values []interface{}
-}
+type notinLease4ClientId []interface{}
 
-func (in *notinLease4ClientId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4ClientId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"client_id" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"client_id" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ClientIdNotIn(values []string) Lease4QS {
@@ -420,9 +434,7 @@ func (qs Lease4QS) ClientIdNotIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4ClientId{
-			values: vals,
-		},
+		notinLease4ClientId(vals),
 	)
 
 	return qs
@@ -441,6 +453,17 @@ func (qs Lease4QS) OrderByClientIdDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnClientId marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnClientId() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"client_id"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.client_id
+
+// BEGIN - django_kea.Lease4.valid_lifetime
 
 // ValidLifetimeIsNull filters for ValidLifetime being null
 func (qs Lease4QS) ValidLifetimeIsNull() Lease4QS {
@@ -494,21 +517,19 @@ func (qs Lease4QS) ValidLifetimeGe(v int64) Lease4QS {
 	return qs.filter(`"valid_lifetime" >=`, v)
 }
 
-type inLease4ValidLifetime struct {
-	values []interface{}
-}
+type inLease4ValidLifetime []interface{}
 
-func (in *inLease4ValidLifetime) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4ValidLifetime) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"valid_lifetime" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"valid_lifetime" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ValidLifetimeIn(values []int64) Lease4QS {
@@ -519,29 +540,25 @@ func (qs Lease4QS) ValidLifetimeIn(values []int64) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4ValidLifetime{
-			values: vals,
-		},
+		inLease4ValidLifetime(vals),
 	)
 
 	return qs
 }
 
-type notinLease4ValidLifetime struct {
-	values []interface{}
-}
+type notinLease4ValidLifetime []interface{}
 
-func (in *notinLease4ValidLifetime) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4ValidLifetime) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"valid_lifetime" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"valid_lifetime" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ValidLifetimeNotIn(values []int64) Lease4QS {
@@ -552,9 +569,7 @@ func (qs Lease4QS) ValidLifetimeNotIn(values []int64) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4ValidLifetime{
-			values: vals,
-		},
+		notinLease4ValidLifetime(vals),
 	)
 
 	return qs
@@ -573,6 +588,17 @@ func (qs Lease4QS) OrderByValidLifetimeDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnValidLifetime marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnValidLifetime() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"valid_lifetime"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.valid_lifetime
+
+// BEGIN - django_kea.Lease4.expire
 
 // ExpireIsNull filters for Expire being null
 func (qs Lease4QS) ExpireIsNull() Lease4QS {
@@ -626,21 +652,19 @@ func (qs Lease4QS) ExpireGe(v time.Time) Lease4QS {
 	return qs.filter(`"expire" >=`, v)
 }
 
-type inLease4Expire struct {
-	values []interface{}
-}
+type inLease4Expire []interface{}
 
-func (in *inLease4Expire) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4Expire) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"expire" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"expire" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ExpireIn(values []time.Time) Lease4QS {
@@ -651,29 +675,25 @@ func (qs Lease4QS) ExpireIn(values []time.Time) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4Expire{
-			values: vals,
-		},
+		inLease4Expire(vals),
 	)
 
 	return qs
 }
 
-type notinLease4Expire struct {
-	values []interface{}
-}
+type notinLease4Expire []interface{}
 
-func (in *notinLease4Expire) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4Expire) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"expire" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"expire" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) ExpireNotIn(values []time.Time) Lease4QS {
@@ -684,9 +704,7 @@ func (qs Lease4QS) ExpireNotIn(values []time.Time) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4Expire{
-			values: vals,
-		},
+		notinLease4Expire(vals),
 	)
 
 	return qs
@@ -705,6 +723,17 @@ func (qs Lease4QS) OrderByExpireDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnExpire marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnExpire() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"expire"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.expire
+
+// BEGIN - django_kea.Lease4.subnet_id
 
 // SubnetIdIsNull filters for SubnetId being null
 func (qs Lease4QS) SubnetIdIsNull() Lease4QS {
@@ -758,21 +787,19 @@ func (qs Lease4QS) SubnetIdGe(v int64) Lease4QS {
 	return qs.filter(`"subnet_id" >=`, v)
 }
 
-type inLease4SubnetId struct {
-	values []interface{}
-}
+type inLease4SubnetId []interface{}
 
-func (in *inLease4SubnetId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4SubnetId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"subnet_id" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"subnet_id" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) SubnetIdIn(values []int64) Lease4QS {
@@ -783,29 +810,25 @@ func (qs Lease4QS) SubnetIdIn(values []int64) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4SubnetId{
-			values: vals,
-		},
+		inLease4SubnetId(vals),
 	)
 
 	return qs
 }
 
-type notinLease4SubnetId struct {
-	values []interface{}
-}
+type notinLease4SubnetId []interface{}
 
-func (in *notinLease4SubnetId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4SubnetId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"subnet_id" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"subnet_id" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) SubnetIdNotIn(values []int64) Lease4QS {
@@ -816,9 +839,7 @@ func (qs Lease4QS) SubnetIdNotIn(values []int64) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4SubnetId{
-			values: vals,
-		},
+		notinLease4SubnetId(vals),
 	)
 
 	return qs
@@ -837,6 +858,17 @@ func (qs Lease4QS) OrderBySubnetIdDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnSubnetId marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnSubnetId() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"subnet_id"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.subnet_id
+
+// BEGIN - django_kea.Lease4.fqdn_fwd
 
 // FqdnFwdIsNull filters for FqdnFwd being null
 func (qs Lease4QS) FqdnFwdIsNull() Lease4QS {
@@ -870,41 +902,19 @@ func (qs Lease4QS) FqdnFwdNe(v bool) Lease4QS {
 	return qs.filter(`"fqdn_fwd" <>`, v)
 }
 
-// FqdnFwdLt filters for FqdnFwd being less than argument
-func (qs Lease4QS) FqdnFwdLt(v bool) Lease4QS {
-	return qs.filter(`"fqdn_fwd" <`, v)
-}
+type inLease4FqdnFwd []interface{}
 
-// FqdnFwdLe filters for FqdnFwd being less than or equal to argument
-func (qs Lease4QS) FqdnFwdLe(v bool) Lease4QS {
-	return qs.filter(`"fqdn_fwd" <=`, v)
-}
-
-// FqdnFwdGt filters for FqdnFwd being greater than argument
-func (qs Lease4QS) FqdnFwdGt(v bool) Lease4QS {
-	return qs.filter(`"fqdn_fwd" >`, v)
-}
-
-// FqdnFwdGe filters for FqdnFwd being greater than or equal to argument
-func (qs Lease4QS) FqdnFwdGe(v bool) Lease4QS {
-	return qs.filter(`"fqdn_fwd" >=`, v)
-}
-
-type inLease4FqdnFwd struct {
-	values []interface{}
-}
-
-func (in *inLease4FqdnFwd) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4FqdnFwd) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"fqdn_fwd" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"fqdn_fwd" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) FqdnFwdIn(values []bool) Lease4QS {
@@ -915,29 +925,25 @@ func (qs Lease4QS) FqdnFwdIn(values []bool) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4FqdnFwd{
-			values: vals,
-		},
+		inLease4FqdnFwd(vals),
 	)
 
 	return qs
 }
 
-type notinLease4FqdnFwd struct {
-	values []interface{}
-}
+type notinLease4FqdnFwd []interface{}
 
-func (in *notinLease4FqdnFwd) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4FqdnFwd) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"fqdn_fwd" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"fqdn_fwd" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) FqdnFwdNotIn(values []bool) Lease4QS {
@@ -948,9 +954,7 @@ func (qs Lease4QS) FqdnFwdNotIn(values []bool) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4FqdnFwd{
-			values: vals,
-		},
+		notinLease4FqdnFwd(vals),
 	)
 
 	return qs
@@ -969,6 +973,17 @@ func (qs Lease4QS) OrderByFqdnFwdDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnFqdnFwd marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnFqdnFwd() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"fqdn_fwd"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.fqdn_fwd
+
+// BEGIN - django_kea.Lease4.fqdn_rev
 
 // FqdnRevIsNull filters for FqdnRev being null
 func (qs Lease4QS) FqdnRevIsNull() Lease4QS {
@@ -1002,41 +1017,19 @@ func (qs Lease4QS) FqdnRevNe(v bool) Lease4QS {
 	return qs.filter(`"fqdn_rev" <>`, v)
 }
 
-// FqdnRevLt filters for FqdnRev being less than argument
-func (qs Lease4QS) FqdnRevLt(v bool) Lease4QS {
-	return qs.filter(`"fqdn_rev" <`, v)
-}
+type inLease4FqdnRev []interface{}
 
-// FqdnRevLe filters for FqdnRev being less than or equal to argument
-func (qs Lease4QS) FqdnRevLe(v bool) Lease4QS {
-	return qs.filter(`"fqdn_rev" <=`, v)
-}
-
-// FqdnRevGt filters for FqdnRev being greater than argument
-func (qs Lease4QS) FqdnRevGt(v bool) Lease4QS {
-	return qs.filter(`"fqdn_rev" >`, v)
-}
-
-// FqdnRevGe filters for FqdnRev being greater than or equal to argument
-func (qs Lease4QS) FqdnRevGe(v bool) Lease4QS {
-	return qs.filter(`"fqdn_rev" >=`, v)
-}
-
-type inLease4FqdnRev struct {
-	values []interface{}
-}
-
-func (in *inLease4FqdnRev) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4FqdnRev) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"fqdn_rev" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"fqdn_rev" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) FqdnRevIn(values []bool) Lease4QS {
@@ -1047,29 +1040,25 @@ func (qs Lease4QS) FqdnRevIn(values []bool) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4FqdnRev{
-			values: vals,
-		},
+		inLease4FqdnRev(vals),
 	)
 
 	return qs
 }
 
-type notinLease4FqdnRev struct {
-	values []interface{}
-}
+type notinLease4FqdnRev []interface{}
 
-func (in *notinLease4FqdnRev) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4FqdnRev) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"fqdn_rev" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"fqdn_rev" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) FqdnRevNotIn(values []bool) Lease4QS {
@@ -1080,9 +1069,7 @@ func (qs Lease4QS) FqdnRevNotIn(values []bool) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4FqdnRev{
-			values: vals,
-		},
+		notinLease4FqdnRev(vals),
 	)
 
 	return qs
@@ -1101,6 +1088,17 @@ func (qs Lease4QS) OrderByFqdnRevDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnFqdnRev marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnFqdnRev() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"fqdn_rev"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.fqdn_rev
+
+// BEGIN - django_kea.Lease4.hostname
 
 // HostnameIsNull filters for Hostname being null
 func (qs Lease4QS) HostnameIsNull() Lease4QS {
@@ -1154,21 +1152,19 @@ func (qs Lease4QS) HostnameGe(v string) Lease4QS {
 	return qs.filter(`"hostname" >=`, v)
 }
 
-type inLease4Hostname struct {
-	values []interface{}
-}
+type inLease4Hostname []interface{}
 
-func (in *inLease4Hostname) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4Hostname) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"hostname" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"hostname" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) HostnameIn(values []string) Lease4QS {
@@ -1179,29 +1175,25 @@ func (qs Lease4QS) HostnameIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4Hostname{
-			values: vals,
-		},
+		inLease4Hostname(vals),
 	)
 
 	return qs
 }
 
-type notinLease4Hostname struct {
-	values []interface{}
-}
+type notinLease4Hostname []interface{}
 
-func (in *notinLease4Hostname) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4Hostname) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"hostname" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"hostname" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) HostnameNotIn(values []string) Lease4QS {
@@ -1212,9 +1204,7 @@ func (qs Lease4QS) HostnameNotIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4Hostname{
-			values: vals,
-		},
+		notinLease4Hostname(vals),
 	)
 
 	return qs
@@ -1234,13 +1224,24 @@ func (qs Lease4QS) OrderByHostnameDesc() Lease4QS {
 	return qs
 }
 
+// DistinctOnHostname marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnHostname() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"hostname"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.hostname
+
+// BEGIN - django_kea.Lease4.state
+
 // GetState returns Leasestate
-func (l *Lease4) GetState(db models.DBInterface) (*Leasestate, error) {
+func (l *Lease4) GetState(ctx context.Context, db models.DBInterface) (*Leasestate, error) {
 	if !l.state.Valid {
 		return nil, nil
 	}
 
-	return LeasestateQS{}.StateEq(l.state.Int64).First(db)
+	return LeasestateQS{}.StateEq(l.state.Int64).First(ctx, db)
 }
 
 // SetState sets foreign key pointer to Leasestate
@@ -1313,6 +1314,27 @@ func (qs Lease4QS) StateIn(oqs LeasestateQS) Lease4QS {
 	return qs
 }
 
+type notinLease4stateLeasestate struct {
+	qs LeasestateQS
+}
+
+func (nin *notinLease4stateLeasestate) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	s, p := nin.qs.QueryId(c)
+
+	return `"state" NOT IN (` + s + `)`, p
+}
+
+func (qs Lease4QS) StateNotIn(oqs LeasestateQS) Lease4QS {
+	qs.condFragments = append(
+		qs.condFragments,
+		&notinLease4stateLeasestate{
+			qs: oqs,
+		},
+	)
+
+	return qs
+}
+
 // OrderByState sorts result by State in ascending order
 func (qs Lease4QS) OrderByState() Lease4QS {
 	qs.order = append(qs.order, `"state"`)
@@ -1326,6 +1348,17 @@ func (qs Lease4QS) OrderByStateDesc() Lease4QS {
 
 	return qs
 }
+
+// DistinctOnState marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnState() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"state"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.state
+
+// BEGIN - django_kea.Lease4.user_context
 
 // UserContextIsNull filters for UserContext being null
 func (qs Lease4QS) UserContextIsNull() Lease4QS {
@@ -1379,21 +1412,19 @@ func (qs Lease4QS) UserContextGe(v string) Lease4QS {
 	return qs.filter(`"user_context" >=`, v)
 }
 
-type inLease4UserContext struct {
-	values []interface{}
-}
+type inLease4UserContext []interface{}
 
-func (in *inLease4UserContext) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inLease4UserContext) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"user_context" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"user_context" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) UserContextIn(values []string) Lease4QS {
@@ -1404,29 +1435,25 @@ func (qs Lease4QS) UserContextIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inLease4UserContext{
-			values: vals,
-		},
+		inLease4UserContext(vals),
 	)
 
 	return qs
 }
 
-type notinLease4UserContext struct {
-	values []interface{}
-}
+type notinLease4UserContext []interface{}
 
-func (in *notinLease4UserContext) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinLease4UserContext) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"user_context" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"user_context" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs Lease4QS) UserContextNotIn(values []string) Lease4QS {
@@ -1437,9 +1464,7 @@ func (qs Lease4QS) UserContextNotIn(values []string) Lease4QS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinLease4UserContext{
-			values: vals,
-		},
+		notinLease4UserContext(vals),
 	)
 
 	return qs
@@ -1459,9 +1484,429 @@ func (qs Lease4QS) OrderByUserContextDesc() Lease4QS {
 	return qs
 }
 
+// DistinctOnUserContext marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnUserContext() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"user_context"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.user_context
+
+// BEGIN - django_kea.Lease4.relay_id
+
+// RelayIdIsNull filters for RelayId being null
+func (qs Lease4QS) RelayIdIsNull() Lease4QS {
+	qs.condFragments = append(
+		qs.condFragments,
+		&models.ConstantFragment{
+			Constant: `"relay_id" IS NULL`,
+		},
+	)
+	return qs
+}
+
+// RelayIdIsNotNull filters for RelayId being not null
+func (qs Lease4QS) RelayIdIsNotNull() Lease4QS {
+	qs.condFragments = append(
+		qs.condFragments,
+		&models.ConstantFragment{
+			Constant: `"relay_id" IS NOT NULL`,
+		},
+	)
+	return qs
+}
+
+// RelayIdEq filters for RelayId being equal to argument
+func (qs Lease4QS) RelayIdEq(v string) Lease4QS {
+	return qs.filter(`"relay_id" =`, v)
+}
+
+// RelayIdNe filters for RelayId being not equal to argument
+func (qs Lease4QS) RelayIdNe(v string) Lease4QS {
+	return qs.filter(`"relay_id" <>`, v)
+}
+
+// RelayIdLt filters for RelayId being less than argument
+func (qs Lease4QS) RelayIdLt(v string) Lease4QS {
+	return qs.filter(`"relay_id" <`, v)
+}
+
+// RelayIdLe filters for RelayId being less than or equal to argument
+func (qs Lease4QS) RelayIdLe(v string) Lease4QS {
+	return qs.filter(`"relay_id" <=`, v)
+}
+
+// RelayIdGt filters for RelayId being greater than argument
+func (qs Lease4QS) RelayIdGt(v string) Lease4QS {
+	return qs.filter(`"relay_id" >`, v)
+}
+
+// RelayIdGe filters for RelayId being greater than or equal to argument
+func (qs Lease4QS) RelayIdGe(v string) Lease4QS {
+	return qs.filter(`"relay_id" >=`, v)
+}
+
+type inLease4RelayId []interface{}
+
+func (in inLease4RelayId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"relay_id" IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) RelayIdIn(values []string) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		inLease4RelayId(vals),
+	)
+
+	return qs
+}
+
+type notinLease4RelayId []interface{}
+
+func (in notinLease4RelayId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"relay_id" NOT IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) RelayIdNotIn(values []string) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		notinLease4RelayId(vals),
+	)
+
+	return qs
+}
+
+// OrderByRelayId sorts result by RelayId in ascending order
+func (qs Lease4QS) OrderByRelayId() Lease4QS {
+	qs.order = append(qs.order, `"relay_id"`)
+
+	return qs
+}
+
+// OrderByRelayIdDesc sorts result by RelayId in descending order
+func (qs Lease4QS) OrderByRelayIdDesc() Lease4QS {
+	qs.order = append(qs.order, `"relay_id" DESC`)
+
+	return qs
+}
+
+// DistinctOnRelayId marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnRelayId() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"relay_id"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.relay_id
+
+// BEGIN - django_kea.Lease4.remote_id
+
+// RemoteIdIsNull filters for RemoteId being null
+func (qs Lease4QS) RemoteIdIsNull() Lease4QS {
+	qs.condFragments = append(
+		qs.condFragments,
+		&models.ConstantFragment{
+			Constant: `"remote_id" IS NULL`,
+		},
+	)
+	return qs
+}
+
+// RemoteIdIsNotNull filters for RemoteId being not null
+func (qs Lease4QS) RemoteIdIsNotNull() Lease4QS {
+	qs.condFragments = append(
+		qs.condFragments,
+		&models.ConstantFragment{
+			Constant: `"remote_id" IS NOT NULL`,
+		},
+	)
+	return qs
+}
+
+// RemoteIdEq filters for RemoteId being equal to argument
+func (qs Lease4QS) RemoteIdEq(v string) Lease4QS {
+	return qs.filter(`"remote_id" =`, v)
+}
+
+// RemoteIdNe filters for RemoteId being not equal to argument
+func (qs Lease4QS) RemoteIdNe(v string) Lease4QS {
+	return qs.filter(`"remote_id" <>`, v)
+}
+
+// RemoteIdLt filters for RemoteId being less than argument
+func (qs Lease4QS) RemoteIdLt(v string) Lease4QS {
+	return qs.filter(`"remote_id" <`, v)
+}
+
+// RemoteIdLe filters for RemoteId being less than or equal to argument
+func (qs Lease4QS) RemoteIdLe(v string) Lease4QS {
+	return qs.filter(`"remote_id" <=`, v)
+}
+
+// RemoteIdGt filters for RemoteId being greater than argument
+func (qs Lease4QS) RemoteIdGt(v string) Lease4QS {
+	return qs.filter(`"remote_id" >`, v)
+}
+
+// RemoteIdGe filters for RemoteId being greater than or equal to argument
+func (qs Lease4QS) RemoteIdGe(v string) Lease4QS {
+	return qs.filter(`"remote_id" >=`, v)
+}
+
+type inLease4RemoteId []interface{}
+
+func (in inLease4RemoteId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"remote_id" IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) RemoteIdIn(values []string) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		inLease4RemoteId(vals),
+	)
+
+	return qs
+}
+
+type notinLease4RemoteId []interface{}
+
+func (in notinLease4RemoteId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"remote_id" NOT IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) RemoteIdNotIn(values []string) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		notinLease4RemoteId(vals),
+	)
+
+	return qs
+}
+
+// OrderByRemoteId sorts result by RemoteId in ascending order
+func (qs Lease4QS) OrderByRemoteId() Lease4QS {
+	qs.order = append(qs.order, `"remote_id"`)
+
+	return qs
+}
+
+// OrderByRemoteIdDesc sorts result by RemoteId in descending order
+func (qs Lease4QS) OrderByRemoteIdDesc() Lease4QS {
+	qs.order = append(qs.order, `"remote_id" DESC`)
+
+	return qs
+}
+
+// DistinctOnRemoteId marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnRemoteId() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"remote_id"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.remote_id
+
+// BEGIN - django_kea.Lease4.pool_id
+
+// PoolIdEq filters for PoolId being equal to argument
+func (qs Lease4QS) PoolIdEq(v int64) Lease4QS {
+	return qs.filter(`"pool_id" =`, v)
+}
+
+// PoolIdNe filters for PoolId being not equal to argument
+func (qs Lease4QS) PoolIdNe(v int64) Lease4QS {
+	return qs.filter(`"pool_id" <>`, v)
+}
+
+// PoolIdLt filters for PoolId being less than argument
+func (qs Lease4QS) PoolIdLt(v int64) Lease4QS {
+	return qs.filter(`"pool_id" <`, v)
+}
+
+// PoolIdLe filters for PoolId being less than or equal to argument
+func (qs Lease4QS) PoolIdLe(v int64) Lease4QS {
+	return qs.filter(`"pool_id" <=`, v)
+}
+
+// PoolIdGt filters for PoolId being greater than argument
+func (qs Lease4QS) PoolIdGt(v int64) Lease4QS {
+	return qs.filter(`"pool_id" >`, v)
+}
+
+// PoolIdGe filters for PoolId being greater than or equal to argument
+func (qs Lease4QS) PoolIdGe(v int64) Lease4QS {
+	return qs.filter(`"pool_id" >=`, v)
+}
+
+type inLease4PoolId []interface{}
+
+func (in inLease4PoolId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"pool_id" IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) PoolIdIn(values []int64) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		inLease4PoolId(vals),
+	)
+
+	return qs
+}
+
+type notinLease4PoolId []interface{}
+
+func (in notinLease4PoolId) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
+		return `false`, nil
+	}
+
+	var params []string
+	for range in {
+		params = append(params, c.Get())
+	}
+
+	return `"pool_id" NOT IN (` + strings.Join(params, ", ") + `)`, in
+}
+
+func (qs Lease4QS) PoolIdNotIn(values []int64) Lease4QS {
+	var vals []interface{}
+	for _, v := range values {
+		vals = append(vals, v)
+	}
+
+	qs.condFragments = append(
+		qs.condFragments,
+		notinLease4PoolId(vals),
+	)
+
+	return qs
+}
+
+// OrderByPoolId sorts result by PoolId in ascending order
+func (qs Lease4QS) OrderByPoolId() Lease4QS {
+	qs.order = append(qs.order, `"pool_id"`)
+
+	return qs
+}
+
+// OrderByPoolIdDesc sorts result by PoolId in descending order
+func (qs Lease4QS) OrderByPoolIdDesc() Lease4QS {
+	qs.order = append(qs.order, `"pool_id" DESC`)
+
+	return qs
+}
+
+// DistinctOnPoolId marks field in queries to add to DISTINCT ON clause
+func (qs Lease4QS) DistinctOnPoolId() Lease4QS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"pool_id"`)
+
+	return qs
+}
+
+// END - django_kea.Lease4.pool_id
+
+// OrderByRandom randomizes result
+func (qs Lease4QS) OrderByRandom() Lease4QS {
+	qs.order = append(qs.order, `random()`)
+
+	return qs
+}
+
 // ForUpdate marks the queryset to use FOR UPDATE clause
 func (qs Lease4QS) ForUpdate() Lease4QS {
-	qs.forUpdate = true
+	qs.forClause = " FOR UPDATE"
+
+	return qs
+}
+
+// ForUpdateNowait marks the queryset to use FOR UPDATE NOWAIT clause
+func (qs Lease4QS) ForUpdateNowait() Lease4QS {
+	qs.forClause = " FOR UPDATE NOWAIT"
+
+	return qs
+}
+
+// ForUpdateSkipLocked marks the queryset to use FOR UPDATE SKIP LOCKED clause
+func (qs Lease4QS) ForUpdateSkipLocked() Lease4QS {
+	qs.forClause = " FOR UPDATE SKIP LOCKED"
+
+	return qs
+}
+
+// ClearForUpdate clears FOR UPDATE clause set on queryset
+func (qs Lease4QS) ClearForUpdate() Lease4QS {
+	qs.forClause = ""
 
 	return qs
 }
@@ -1484,16 +1929,19 @@ func (qs Lease4QS) orderByClause() string {
 	return " ORDER BY " + strings.Join(qs.order, ", ")
 }
 
-func (qs Lease4QS) queryFull() (string, []interface{}) {
+func (qs Lease4QS) queryFull(distinctOnFields []string) (string, []interface{}) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s += qs.orderByClause()
-	if qs.forUpdate {
-		s += " FOR UPDATE"
+	s += qs.forClause
+
+	var distinctClause string
+	if len(distinctOnFields) > 0 {
+		distinctClause = fmt.Sprintf("DISTINCT ON (%s) ", strings.Join(distinctOnFields, ", "))
 	}
 
-	return `SELECT "address", "hwaddr", "client_id", "valid_lifetime", "expire", "subnet_id", "fqdn_fwd", "fqdn_rev", "hostname", "state", "user_context" FROM "lease4"` + s, p
+	return `SELECT ` + distinctClause + `"address", "hwaddr", "client_id", "valid_lifetime", "expire", "subnet_id", "fqdn_fwd", "fqdn_rev", "hostname", "state", "user_context", "relay_id", "remote_id", "pool_id" FROM "lease4"` + s, p
 }
 
 // QueryId returns statement and parameters suitable for embedding in IN clause
@@ -1503,42 +1951,66 @@ func (qs Lease4QS) QueryId(c *models.PositionalCounter) (string, []interface{}) 
 	return `SELECT "address" FROM "lease4"` + s, p
 }
 
-// All returns all rows matching queryset filters
-func (qs Lease4QS) All(db models.DBInterface) ([]*Lease4, error) {
-	s, p := qs.queryFull()
+// Count returns the number of rows matching queryset filters
+func (qs Lease4QS) Count(ctx context.Context, db models.DBInterface) (count int, err error) {
+	c := &models.PositionalCounter{}
 
-	rows, err := db.Query(s, p...)
+	s, p := qs.whereClause(c)
+
+	var countClause string
+	if len(qs.distinctOnFields) > 0 {
+		countClause = fmt.Sprintf("DISTINCT (%s)", strings.Join(qs.distinctOnFields, ", "))
+	} else {
+		countClause = `"address"`
+	}
+
+	row := db.QueryRow(ctx, `SELECT COUNT(`+countClause+`) FROM "lease4"`+s, p...)
+
+	err = row.Scan(&count)
+
+	return
+}
+
+// All returns all rows matching queryset filters
+func (qs Lease4QS) All(ctx context.Context, db models.DBInterface) (Lease4List, error) {
+	s, p := qs.queryFull(qs.distinctOnFields)
+
+	rows, err := db.Query(ctx, s, p...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var ret []*Lease4
+	var ret Lease4List
 	for rows.Next() {
 		obj := Lease4{existsInDB: true}
-		if err = rows.Scan(&obj.Address, &obj.Hwaddr, &obj.ClientId, &obj.ValidLifetime, &obj.Expire, &obj.SubnetId, &obj.FqdnFwd, &obj.FqdnRev, &obj.Hostname, &obj.state, &obj.UserContext); err != nil {
+		if err = rows.Scan(&obj.Address, &obj.Hwaddr, &obj.ClientId, &obj.ValidLifetime, &obj.Expire, &obj.SubnetId, &obj.FqdnFwd, &obj.FqdnRev, &obj.Hostname, &obj.state, &obj.UserContext, &obj.RelayId, &obj.RemoteId, &obj.PoolId); err != nil {
 			return nil, err
 		}
 		ret = append(ret, &obj)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
 	}
 
 	return ret, nil
 }
 
 // First returns the first row matching queryset filters, others are discarded
-func (qs Lease4QS) First(db models.DBInterface) (*Lease4, error) {
-	s, p := qs.queryFull()
+func (qs Lease4QS) First(ctx context.Context, db models.DBInterface) (*Lease4, error) {
+	s, p := qs.queryFull(nil)
 
 	s += " LIMIT 1"
 
-	row := db.QueryRow(s, p...)
+	row := db.QueryRow(ctx, s, p...)
 
 	obj := Lease4{existsInDB: true}
-	err := row.Scan(&obj.Address, &obj.Hwaddr, &obj.ClientId, &obj.ValidLifetime, &obj.Expire, &obj.SubnetId, &obj.FqdnFwd, &obj.FqdnRev, &obj.Hostname, &obj.state, &obj.UserContext)
+	err := row.Scan(&obj.Address, &obj.Hwaddr, &obj.ClientId, &obj.ValidLifetime, &obj.Expire, &obj.SubnetId, &obj.FqdnFwd, &obj.FqdnRev, &obj.Hostname, &obj.state, &obj.UserContext, &obj.RelayId, &obj.RemoteId, &obj.PoolId)
 	switch err {
 	case nil:
 		return &obj, nil
-	case sql.ErrNoRows:
+	case pgx.ErrNoRows:
 		return nil, nil
 	default:
 		return nil, err
@@ -1546,18 +2018,18 @@ func (qs Lease4QS) First(db models.DBInterface) (*Lease4, error) {
 }
 
 // Delete deletes rows matching queryset filters
-func (qs Lease4QS) Delete(db models.DBInterface) (int64, error) {
+func (qs Lease4QS) Delete(ctx context.Context, db models.DBInterface) (int64, error) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s = `DELETE FROM "lease4"` + s
 
-	result, err := db.Exec(s, p...)
+	result, err := db.Exec(ctx, s, p...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // Update returns an Update queryset inheriting all the filter conditions, which then can be
@@ -1648,8 +2120,23 @@ func (uqs Lease4UpdateQS) SetUserContext(v sql.NullString) Lease4UpdateQS {
 	return uqs.update(`"user_context"`, v)
 }
 
+// SetRelayId sets RelayId to the given value
+func (uqs Lease4UpdateQS) SetRelayId(v sql.NullString) Lease4UpdateQS {
+	return uqs.update(`"relay_id"`, v)
+}
+
+// SetRemoteId sets RemoteId to the given value
+func (uqs Lease4UpdateQS) SetRemoteId(v sql.NullString) Lease4UpdateQS {
+	return uqs.update(`"remote_id"`, v)
+}
+
+// SetPoolId sets PoolId to the given value
+func (uqs Lease4UpdateQS) SetPoolId(v int64) Lease4UpdateQS {
+	return uqs.update(`"pool_id"`, v)
+}
+
 // Exec executes the update operation
-func (uqs Lease4UpdateQS) Exec(db models.DBInterface) (int64, error) {
+func (uqs Lease4UpdateQS) Exec(ctx context.Context, db models.DBInterface) (int64, error) {
 	if len(uqs.updates) == 0 {
 		return 0, nil
 	}
@@ -1672,17 +2159,17 @@ func (uqs Lease4UpdateQS) Exec(db models.DBInterface) (int64, error) {
 
 	params = append(params, wp...)
 
-	result, err := db.Exec(st, params...)
+	result, err := db.Exec(ctx, st, params...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // insert operation
-func (l *Lease4) insert(db models.DBInterface) error {
-	_, err := db.Exec(`INSERT INTO "lease4" ("hwaddr", "client_id", "valid_lifetime", "expire", "subnet_id", "fqdn_fwd", "fqdn_rev", "hostname", "state", "user_context", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`, l.Hwaddr, l.ClientId, l.ValidLifetime, l.Expire, l.SubnetId, l.FqdnFwd, l.FqdnRev, l.Hostname, l.state, l.UserContext, l.Address)
+func (l *Lease4) insert(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `INSERT INTO "lease4" ("hwaddr", "client_id", "valid_lifetime", "expire", "subnet_id", "fqdn_fwd", "fqdn_rev", "hostname", "state", "user_context", "relay_id", "remote_id", "pool_id", "address") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`, l.Hwaddr, l.ClientId, l.ValidLifetime, l.Expire, l.SubnetId, l.FqdnFwd, l.FqdnRev, l.Hostname, l.state, l.UserContext, l.RelayId, l.RemoteId, l.PoolId, l.Address)
 
 	if err != nil {
 		return err
@@ -1694,26 +2181,68 @@ func (l *Lease4) insert(db models.DBInterface) error {
 }
 
 // update operation
-func (l *Lease4) update(db models.DBInterface) error {
-	_, err := db.Exec(`UPDATE "lease4" SET "hwaddr" = $1, "client_id" = $2, "valid_lifetime" = $3, "expire" = $4, "subnet_id" = $5, "fqdn_fwd" = $6, "fqdn_rev" = $7, "hostname" = $8, "state" = $9, "user_context" = $10 WHERE "address" = $11`, l.Hwaddr, l.ClientId, l.ValidLifetime, l.Expire, l.SubnetId, l.FqdnFwd, l.FqdnRev, l.Hostname, l.state, l.UserContext, l.Address)
+func (l *Lease4) update(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `UPDATE "lease4" SET "hwaddr" = $1, "client_id" = $2, "valid_lifetime" = $3, "expire" = $4, "subnet_id" = $5, "fqdn_fwd" = $6, "fqdn_rev" = $7, "hostname" = $8, "state" = $9, "user_context" = $10, "relay_id" = $11, "remote_id" = $12, "pool_id" = $13 WHERE "address" = $14`, l.Hwaddr, l.ClientId, l.ValidLifetime, l.Expire, l.SubnetId, l.FqdnFwd, l.FqdnRev, l.Hostname, l.state, l.UserContext, l.RelayId, l.RemoteId, l.PoolId, l.Address)
 
 	return err
 }
 
 // Save inserts or updates record
-func (l *Lease4) Save(db models.DBInterface) error {
+func (l *Lease4) Save(ctx context.Context, db models.DBInterface) error {
 	if l.existsInDB {
-		return l.update(db)
+		return l.update(ctx, db)
 	}
 
-	return l.insert(db)
+	return l.insert(ctx, db)
 }
 
 // Delete removes row from database
-func (l *Lease4) Delete(db models.DBInterface) error {
-	_, err := db.Exec(`DELETE FROM "lease4" WHERE "address" = $1`, l.Address)
+func (l *Lease4) Delete(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `DELETE FROM "lease4" WHERE "address" = $1`, l.Address)
 
 	l.existsInDB = false
 
 	return err
+}
+
+// Save saves all elements, optimizing inserts in a batch
+func (ll Lease4List) Save(ctx context.Context, db models.DBInterface) error {
+	var inserts Lease4List
+
+	for _, l := range ll {
+		if l.existsInDB {
+			if err := l.update(ctx, db); err != nil {
+				return err
+			}
+		} else {
+			inserts = append(inserts, l)
+		}
+	}
+
+	if len(inserts) == 0 {
+		return nil
+	}
+
+	vva := make([]string, 0, len(inserts))
+	vaa := make([]any, 0, 14*len(inserts))
+	offs := 1
+	for _, l := range inserts {
+		vva = append(vva, fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d, $%d)", offs+0, offs+1, offs+2, offs+3, offs+4, offs+5, offs+6, offs+7, offs+8, offs+9, offs+10, offs+11, offs+12, offs+13))
+		vaa = append(vaa, l.Hwaddr, l.ClientId, l.ValidLifetime, l.Expire, l.SubnetId, l.FqdnFwd, l.FqdnRev, l.Hostname, l.state, l.UserContext, l.RelayId, l.RemoteId, l.PoolId, l.Address)
+		offs += 14
+	}
+
+	qs := `INSERT INTO "lease4" ("hwaddr", "client_id", "valid_lifetime", "expire", "subnet_id", "fqdn_fwd", "fqdn_rev", "hostname", "state", "user_context", "relay_id", "remote_id", "pool_id", "address") VALUES ` + strings.Join(vva, ", ")
+	_, err := db.Exec(ctx, qs, vaa...)
+
+	if err != nil {
+		return err
+	}
+
+	for _, l := range inserts {
+		l.existsInDB = true
+	}
+
+	return nil
+
 }

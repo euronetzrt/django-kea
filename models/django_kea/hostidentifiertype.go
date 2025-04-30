@@ -1,6 +1,6 @@
-/*
-  AUTO-GENERATED file for Django model django_kea.HostIdentifierType
+// Code generated for Django model django_kea.HostIdentifierType. DO NOT EDIT.
 
+/*
   Command used to generate:
 
   DJANGO_SETTINGS_MODULE=keatest.settings ../djan-go-rm/djan-go-rm.py --gomodule github.com/euronetzrt/django-kea django_kea
@@ -11,9 +11,14 @@
 package django_kea
 
 import (
+	"context"
 	"database/sql"
-	"github.com/euronetzrt/django-kea/models"
+	"fmt"
 	"strings"
+
+	"github.com/jackc/pgx/v5"
+
+	"github.com/euronetzrt/django-kea/models"
 )
 
 // Hostidentifiertype mirrors model django_kea.HostIdentifierType
@@ -24,11 +29,15 @@ type Hostidentifiertype struct {
 	Name sql.NullString
 }
 
+// HostidentifiertypeList is a list of Hostidentifiertype
+type HostidentifiertypeList []*Hostidentifiertype
+
 // HostidentifiertypeQS represents a queryset for django_kea.HostIdentifierType
 type HostidentifiertypeQS struct {
-	condFragments models.AndFragment
-	order         []string
-	forUpdate     bool
+	distinctOnFields []string
+	condFragments    models.AndFragment
+	order            []string
+	forClause        string
 }
 
 func (qs HostidentifiertypeQS) filter(c string, p interface{}) HostidentifiertypeQS {
@@ -57,6 +66,8 @@ func (qs HostidentifiertypeQS) Or(exprs ...HostidentifiertypeQS) Hostidentifiert
 
 	return qs
 }
+
+// BEGIN - django_kea.HostIdentifierType.type
 
 // TypeEq filters for Type being equal to argument
 func (qs HostidentifiertypeQS) TypeEq(v int32) HostidentifiertypeQS {
@@ -88,21 +99,19 @@ func (qs HostidentifiertypeQS) TypeGe(v int32) HostidentifiertypeQS {
 	return qs.filter(`"type" >=`, v)
 }
 
-type inHostidentifiertypeType struct {
-	values []interface{}
-}
+type inHostidentifiertypeType []interface{}
 
-func (in *inHostidentifiertypeType) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inHostidentifiertypeType) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"type" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"type" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs HostidentifiertypeQS) TypeIn(values []int32) HostidentifiertypeQS {
@@ -113,29 +122,25 @@ func (qs HostidentifiertypeQS) TypeIn(values []int32) HostidentifiertypeQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inHostidentifiertypeType{
-			values: vals,
-		},
+		inHostidentifiertypeType(vals),
 	)
 
 	return qs
 }
 
-type notinHostidentifiertypeType struct {
-	values []interface{}
-}
+type notinHostidentifiertypeType []interface{}
 
-func (in *notinHostidentifiertypeType) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinHostidentifiertypeType) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"type" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"type" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs HostidentifiertypeQS) TypeNotIn(values []int32) HostidentifiertypeQS {
@@ -146,9 +151,7 @@ func (qs HostidentifiertypeQS) TypeNotIn(values []int32) HostidentifiertypeQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinHostidentifiertypeType{
-			values: vals,
-		},
+		notinHostidentifiertypeType(vals),
 	)
 
 	return qs
@@ -167,6 +170,17 @@ func (qs HostidentifiertypeQS) OrderByTypeDesc() HostidentifiertypeQS {
 
 	return qs
 }
+
+// DistinctOnType marks field in queries to add to DISTINCT ON clause
+func (qs HostidentifiertypeQS) DistinctOnType() HostidentifiertypeQS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"type"`)
+
+	return qs
+}
+
+// END - django_kea.HostIdentifierType.type
+
+// BEGIN - django_kea.HostIdentifierType.name
 
 // NameIsNull filters for Name being null
 func (qs HostidentifiertypeQS) NameIsNull() HostidentifiertypeQS {
@@ -220,21 +234,19 @@ func (qs HostidentifiertypeQS) NameGe(v string) HostidentifiertypeQS {
 	return qs.filter(`"name" >=`, v)
 }
 
-type inHostidentifiertypeName struct {
-	values []interface{}
-}
+type inHostidentifiertypeName []interface{}
 
-func (in *inHostidentifiertypeName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in inHostidentifiertypeName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"name" IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"name" IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs HostidentifiertypeQS) NameIn(values []string) HostidentifiertypeQS {
@@ -245,29 +257,25 @@ func (qs HostidentifiertypeQS) NameIn(values []string) HostidentifiertypeQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&inHostidentifiertypeName{
-			values: vals,
-		},
+		inHostidentifiertypeName(vals),
 	)
 
 	return qs
 }
 
-type notinHostidentifiertypeName struct {
-	values []interface{}
-}
+type notinHostidentifiertypeName []interface{}
 
-func (in *notinHostidentifiertypeName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
-	if len(in.values) == 0 {
+func (in notinHostidentifiertypeName) GetConditionFragment(c *models.PositionalCounter) (string, []interface{}) {
+	if len(in) == 0 {
 		return `false`, nil
 	}
 
 	var params []string
-	for range in.values {
+	for range in {
 		params = append(params, c.Get())
 	}
 
-	return `"name" NOT IN (` + strings.Join(params, ", ") + `)`, in.values
+	return `"name" NOT IN (` + strings.Join(params, ", ") + `)`, in
 }
 
 func (qs HostidentifiertypeQS) NameNotIn(values []string) HostidentifiertypeQS {
@@ -278,9 +286,7 @@ func (qs HostidentifiertypeQS) NameNotIn(values []string) HostidentifiertypeQS {
 
 	qs.condFragments = append(
 		qs.condFragments,
-		&notinHostidentifiertypeName{
-			values: vals,
-		},
+		notinHostidentifiertypeName(vals),
 	)
 
 	return qs
@@ -300,9 +306,46 @@ func (qs HostidentifiertypeQS) OrderByNameDesc() HostidentifiertypeQS {
 	return qs
 }
 
+// DistinctOnName marks field in queries to add to DISTINCT ON clause
+func (qs HostidentifiertypeQS) DistinctOnName() HostidentifiertypeQS {
+	qs.distinctOnFields = append(qs.distinctOnFields, `"name"`)
+
+	return qs
+}
+
+// END - django_kea.HostIdentifierType.name
+
+// OrderByRandom randomizes result
+func (qs HostidentifiertypeQS) OrderByRandom() HostidentifiertypeQS {
+	qs.order = append(qs.order, `random()`)
+
+	return qs
+}
+
 // ForUpdate marks the queryset to use FOR UPDATE clause
 func (qs HostidentifiertypeQS) ForUpdate() HostidentifiertypeQS {
-	qs.forUpdate = true
+	qs.forClause = " FOR UPDATE"
+
+	return qs
+}
+
+// ForUpdateNowait marks the queryset to use FOR UPDATE NOWAIT clause
+func (qs HostidentifiertypeQS) ForUpdateNowait() HostidentifiertypeQS {
+	qs.forClause = " FOR UPDATE NOWAIT"
+
+	return qs
+}
+
+// ForUpdateSkipLocked marks the queryset to use FOR UPDATE SKIP LOCKED clause
+func (qs HostidentifiertypeQS) ForUpdateSkipLocked() HostidentifiertypeQS {
+	qs.forClause = " FOR UPDATE SKIP LOCKED"
+
+	return qs
+}
+
+// ClearForUpdate clears FOR UPDATE clause set on queryset
+func (qs HostidentifiertypeQS) ClearForUpdate() HostidentifiertypeQS {
+	qs.forClause = ""
 
 	return qs
 }
@@ -325,16 +368,19 @@ func (qs HostidentifiertypeQS) orderByClause() string {
 	return " ORDER BY " + strings.Join(qs.order, ", ")
 }
 
-func (qs HostidentifiertypeQS) queryFull() (string, []interface{}) {
+func (qs HostidentifiertypeQS) queryFull(distinctOnFields []string) (string, []interface{}) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s += qs.orderByClause()
-	if qs.forUpdate {
-		s += " FOR UPDATE"
+	s += qs.forClause
+
+	var distinctClause string
+	if len(distinctOnFields) > 0 {
+		distinctClause = fmt.Sprintf("DISTINCT ON (%s) ", strings.Join(distinctOnFields, ", "))
 	}
 
-	return `SELECT "type", "name" FROM "host_identifier_type"` + s, p
+	return `SELECT ` + distinctClause + `"type", "name" FROM "host_identifier_type"` + s, p
 }
 
 // QueryId returns statement and parameters suitable for embedding in IN clause
@@ -344,17 +390,37 @@ func (qs HostidentifiertypeQS) QueryId(c *models.PositionalCounter) (string, []i
 	return `SELECT "type" FROM "host_identifier_type"` + s, p
 }
 
-// All returns all rows matching queryset filters
-func (qs HostidentifiertypeQS) All(db models.DBInterface) ([]*Hostidentifiertype, error) {
-	s, p := qs.queryFull()
+// Count returns the number of rows matching queryset filters
+func (qs HostidentifiertypeQS) Count(ctx context.Context, db models.DBInterface) (count int, err error) {
+	c := &models.PositionalCounter{}
 
-	rows, err := db.Query(s, p...)
+	s, p := qs.whereClause(c)
+
+	var countClause string
+	if len(qs.distinctOnFields) > 0 {
+		countClause = fmt.Sprintf("DISTINCT (%s)", strings.Join(qs.distinctOnFields, ", "))
+	} else {
+		countClause = `"type"`
+	}
+
+	row := db.QueryRow(ctx, `SELECT COUNT(`+countClause+`) FROM "host_identifier_type"`+s, p...)
+
+	err = row.Scan(&count)
+
+	return
+}
+
+// All returns all rows matching queryset filters
+func (qs HostidentifiertypeQS) All(ctx context.Context, db models.DBInterface) (HostidentifiertypeList, error) {
+	s, p := qs.queryFull(qs.distinctOnFields)
+
+	rows, err := db.Query(ctx, s, p...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var ret []*Hostidentifiertype
+	var ret HostidentifiertypeList
 	for rows.Next() {
 		obj := Hostidentifiertype{existsInDB: true}
 		if err = rows.Scan(&obj.Type, &obj.Name); err != nil {
@@ -363,23 +429,27 @@ func (qs HostidentifiertypeQS) All(db models.DBInterface) ([]*Hostidentifiertype
 		ret = append(ret, &obj)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return ret, nil
 }
 
 // First returns the first row matching queryset filters, others are discarded
-func (qs HostidentifiertypeQS) First(db models.DBInterface) (*Hostidentifiertype, error) {
-	s, p := qs.queryFull()
+func (qs HostidentifiertypeQS) First(ctx context.Context, db models.DBInterface) (*Hostidentifiertype, error) {
+	s, p := qs.queryFull(nil)
 
 	s += " LIMIT 1"
 
-	row := db.QueryRow(s, p...)
+	row := db.QueryRow(ctx, s, p...)
 
 	obj := Hostidentifiertype{existsInDB: true}
 	err := row.Scan(&obj.Type, &obj.Name)
 	switch err {
 	case nil:
 		return &obj, nil
-	case sql.ErrNoRows:
+	case pgx.ErrNoRows:
 		return nil, nil
 	default:
 		return nil, err
@@ -387,18 +457,18 @@ func (qs HostidentifiertypeQS) First(db models.DBInterface) (*Hostidentifiertype
 }
 
 // Delete deletes rows matching queryset filters
-func (qs HostidentifiertypeQS) Delete(db models.DBInterface) (int64, error) {
+func (qs HostidentifiertypeQS) Delete(ctx context.Context, db models.DBInterface) (int64, error) {
 	c := &models.PositionalCounter{}
 
 	s, p := qs.whereClause(c)
 	s = `DELETE FROM "host_identifier_type"` + s
 
-	result, err := db.Exec(s, p...)
+	result, err := db.Exec(ctx, s, p...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // Update returns an Update queryset inheriting all the filter conditions, which then can be
@@ -443,7 +513,7 @@ func (uqs HostidentifiertypeUpdateQS) SetName(v sql.NullString) Hostidentifierty
 }
 
 // Exec executes the update operation
-func (uqs HostidentifiertypeUpdateQS) Exec(db models.DBInterface) (int64, error) {
+func (uqs HostidentifiertypeUpdateQS) Exec(ctx context.Context, db models.DBInterface) (int64, error) {
 	if len(uqs.updates) == 0 {
 		return 0, nil
 	}
@@ -466,17 +536,17 @@ func (uqs HostidentifiertypeUpdateQS) Exec(db models.DBInterface) (int64, error)
 
 	params = append(params, wp...)
 
-	result, err := db.Exec(st, params...)
+	result, err := db.Exec(ctx, st, params...)
 	if err != nil {
 		return 0, err
 	}
 
-	return result.RowsAffected()
+	return result.RowsAffected(), nil
 }
 
 // insert operation
-func (h *Hostidentifiertype) insert(db models.DBInterface) error {
-	_, err := db.Exec(`INSERT INTO "host_identifier_type" ("name", "type") VALUES ($1, $2)`, h.Name, h.Type)
+func (h *Hostidentifiertype) insert(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `INSERT INTO "host_identifier_type" ("name", "type") VALUES ($1, $2)`, h.Name, h.Type)
 
 	if err != nil {
 		return err
@@ -488,31 +558,73 @@ func (h *Hostidentifiertype) insert(db models.DBInterface) error {
 }
 
 // update operation
-func (h *Hostidentifiertype) update(db models.DBInterface) error {
-	_, err := db.Exec(`UPDATE "host_identifier_type" SET "name" = $1 WHERE "type" = $2`, h.Name, h.Type)
+func (h *Hostidentifiertype) update(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `UPDATE "host_identifier_type" SET "name" = $1 WHERE "type" = $2`, h.Name, h.Type)
 
 	return err
 }
 
 // Save inserts or updates record
-func (h *Hostidentifiertype) Save(db models.DBInterface) error {
+func (h *Hostidentifiertype) Save(ctx context.Context, db models.DBInterface) error {
 	if h.existsInDB {
-		return h.update(db)
+		return h.update(ctx, db)
 	}
 
-	return h.insert(db)
+	return h.insert(ctx, db)
 }
 
 // Delete removes row from database
-func (h *Hostidentifiertype) Delete(db models.DBInterface) error {
-	_, err := db.Exec(`DELETE FROM "host_identifier_type" WHERE "type" = $1`, h.Type)
+func (h *Hostidentifiertype) Delete(ctx context.Context, db models.DBInterface) error {
+	_, err := db.Exec(ctx, `DELETE FROM "host_identifier_type" WHERE "type" = $1`, h.Type)
 
 	h.existsInDB = false
 
 	return err
 }
 
-// Host returns the set of Host referencing this Hostidentifiertype instance
-func (h *Hostidentifiertype) Host() HostQS {
-	return HostQS{}.DhcpIdentifierTypeEq(h)
+// Save saves all elements, optimizing inserts in a batch
+func (hl HostidentifiertypeList) Save(ctx context.Context, db models.DBInterface) error {
+	var inserts HostidentifiertypeList
+
+	for _, h := range hl {
+		if h.existsInDB {
+			if err := h.update(ctx, db); err != nil {
+				return err
+			}
+		} else {
+			inserts = append(inserts, h)
+		}
+	}
+
+	if len(inserts) == 0 {
+		return nil
+	}
+
+	vva := make([]string, 0, len(inserts))
+	vaa := make([]any, 0, 2*len(inserts))
+	offs := 1
+	for _, h := range inserts {
+		vva = append(vva, fmt.Sprintf("($%d, $%d)", offs+0, offs+1))
+		vaa = append(vaa, h.Name, h.Type)
+		offs += 2
+	}
+
+	qs := `INSERT INTO "host_identifier_type" ("name", "type") VALUES ` + strings.Join(vva, ", ")
+	_, err := db.Exec(ctx, qs, vaa...)
+
+	if err != nil {
+		return err
+	}
+
+	for _, h := range inserts {
+		h.existsInDB = true
+	}
+
+	return nil
+
+}
+
+// Hosts returns the set of Hosts referencing this Hostidentifiertype instance
+func (h *Hostidentifiertype) Hosts() HostsQS {
+	return HostsQS{}.DhcpIdentifierTypeEq(h)
 }
